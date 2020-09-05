@@ -4,7 +4,6 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
 const rotaProdutos = require('./routes/produtos');
-const rotaPedidos = require('./routes/pedidos');
 const rotaOfertas = require('./routes/ofertas');
 const rotaUsuarios = require('./routes/usuarios');
 const rotaCarrinho = require('./routes/carrinho')
@@ -30,7 +29,6 @@ app.use((req, res, next) => {
 
 app.use('/usuarios', rotaUsuarios);
 app.use('/produtos', rotaProdutos);
-app.use('/pedidos', rotaPedidos);
 app.use('/ofertas', rotaOfertas);
 app.use('/carrinho', rotaCarrinho);
 
