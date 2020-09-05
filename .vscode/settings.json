@@ -13,6 +13,19 @@
             "previewLimit": 50,
             "server": "localhost",
             "username": "root"
+        },
+        {
+            "database": "heroku_298f749fac5f5e8",
+            "driver": "MySQL",
+            "mysqlOptions": {
+                "authProtocol": "default"
+            },
+            "name": "cleardb-heroku",
+            "password": "097da542",
+            "port": 3306,
+            "previewLimit": 50,
+            "server": "us-cdbr-east-02.cleardb.com",
+            "username": "b1dff2c09d0541"
         }
     ]
 }
