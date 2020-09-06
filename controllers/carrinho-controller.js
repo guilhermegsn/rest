@@ -10,6 +10,7 @@ exports.getCarrinho = (req, res, next) => {
             'SELECT * FROM carrinho WHERE cliente_pf_idcliente = ?',
             [req.params.idcliente],
             (error, resultado, fields)=>{
+                conn.release();
                 if(error){
                     return res.status(500).send({error: error});
                 }
@@ -18,7 +19,7 @@ exports.getCarrinho = (req, res, next) => {
         )
         
     })
-    conn.release();
+    
 };
 
 exports.setCarrinho = (req, res, next) => {
@@ -38,6 +39,7 @@ exports.setCarrinho = (req, res, next) => {
                     req.body.idproduto
                 ],
                     (error, resultado, fields)=>{
+                        conn.release();
                         if(error){
                             return res.status(500).send({error: error});
                         }
