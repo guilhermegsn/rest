@@ -4,6 +4,7 @@ exports.getCarrinho = (req, res, next) => {
     mysql.getConnection((error, conn)=>{
         if(error){
             return res.status(500).send({error: error});
+           
         }
         conn.query(
             'SELECT * FROM carrinho WHERE cliente_pf_idcliente = ?',
@@ -15,7 +16,9 @@ exports.getCarrinho = (req, res, next) => {
                 return res.status(200).send(resultado)
             }
         )
+        
     })
+    conn.release();
 };
 
 exports.setCarrinho = (req, res, next) => {

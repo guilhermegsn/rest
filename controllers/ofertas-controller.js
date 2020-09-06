@@ -14,5 +14,6 @@ exports.getOfertas = (req, res, next) => {
                 return res.status(200).send(resultado)
             }
         )
-    })
+    });
+    conn.release();
 }
