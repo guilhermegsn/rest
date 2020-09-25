@@ -1,4 +1,5 @@
 const mysql = require('../mysql').pool;
+const { response } = require('express');
 const jwt = require('jsonwebtoken');
 
 exports.cadUsuario = (req, res, next) =>{
@@ -36,6 +37,25 @@ exports.cadUsuario = (req, res, next) =>{
     });
 };
 
+exports.getUsuario = (req, res, next) => {
+    mysql.getConnection((error, conn)=>{
+        if(error){
+            return res.status(500).send({error: error});
+        }
+        conn.query(
+            'SELECT idcliente, cli_nome, cli_email FROM cliente_pf WHERE idcliente = ?',
+            [req.body.idcliente],
+            (error, resultado, fields)=>{
+                conn.release();
+                if(error){
+                    return res.status(500).send({error: error});
+                }
+                return res.status(200).send(resultado)
+            }
+        )
+    })
+};
+
 exports.login = (req, res, next) =>{
     mysql.getConnection((error, conn)=>{
         if(error){
@@ -63,6 +83,7 @@ exports.login = (req, res, next) =>{
                     mensagem: 'Autenticado.',
                     token: token,
                     idcliente: results[0].idcliente,
+                    nome: results[0].cli_nome,
                 });
             }
             return res.status(401).send({mensagem: 'Falha na autenticação.'});

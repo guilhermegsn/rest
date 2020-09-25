@@ -34,7 +34,7 @@ app.use('/carrinho', rotaCarrinho);
 
 // Quando não encontra rota, entra aqui:
 app.use((req, res, next) => {
-    const erro = new Error('Não encontrado');
+    const erro = new Error('404 - Não encontrado');
     erro.status = 404;
     next(erro);
 });
