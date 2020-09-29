@@ -69,3 +69,34 @@ exports.setCarrinho = (req, res, next) => {
         })
     })
 };
+
+exports.decProduto = (req, res, next) => {
+    mysql.getConnection((error, conn)=>{
+        if(error){
+            return res.status(500).send({error: error});
+        }
+        conn.query('SELECT * FROM carrinho WHERE oferta_idoferta = ? and cliente_pf_idcliente = ?', [req.body.idproduto, req.body.idcliente], (error, result)=> {
+            if(error){
+                return res.status(500).send({error: error});
+            }
+            if(result.length>0){
+                conn.query(
+                    "UPDATE carrinho SET qtde = qtde-1 WHERE cliente_pf_idcliente = ? and oferta_idoferta = ?",
+                    [
+                        req.body.idcliente,
+                        req.body.idproduto
+                     ],
+                    (error, resultado, fields)=>{
+                        conn.release();
+                        if(error){
+                            return res.status(500).send({error: error});
+                        }
+                        return res.status(202).send({
+                            mensagem: 'Qtde alterada com sucesso.',
+                        })
+                    }
+                )
+            }
+        })
+    })
+};
