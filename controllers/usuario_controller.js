@@ -21,19 +21,13 @@ exports.cadUsuario = (req, res, next) =>{
                     if(error){
                         return res.status(500).send({error: error});
                     }
-                    response = {
-                        mensagem: 'Usuário criado com sucesso',
-                        usuarioCriado: {
-                            idusuario: results.insertId,
-                            email: req.body.email
-                        }
-                    }
-                    return res.status(201).send(response);
+                    return res.status(201).send({
+                        mensagem: 'Usuário criado com sucesso.',
+                    });
+                    
                 });
-                
             }
         });
-
     });
 };
 
@@ -78,7 +72,7 @@ exports.login = (req, res, next) =>{
                 process.env.JWT_KEY, {
                     expiresIn: "10d"
                 });
-                return res.status(200).send({
+                return res.status(202).send({
                     value: 1,
                     mensagem: 'Autenticado.',
                     token: token,

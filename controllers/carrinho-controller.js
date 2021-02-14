@@ -1,14 +1,15 @@
 const mysql = require('../mysql').pool;
 
+
 exports.getCarrinho = (req, res, next) => {
     mysql.getConnection((error, conn)=>{
         if(error){
             return res.status(500).send({error: error});
-           
+
         }
         conn.query(
-            'SELECT * FROM carrinho WHERE cliente_pf_idcliente = ?',
-            [req.params.idcliente],
+            'SELECT c.*, o.oferta_titulo  FROM carrinho c LEFT JOIN oferta o on c.oferta_idoferta = o.idoferta 	WHERE c.cliente_pf_idcliente = ?',
+            [req.body.idcliente],
             (error, resultado, fields)=>{
                 conn.release();
                 if(error){
@@ -75,28 +76,70 @@ exports.decProduto = (req, res, next) => {
         if(error){
             return res.status(500).send({error: error});
         }
-        conn.query('SELECT * FROM carrinho WHERE oferta_idoferta = ? and cliente_pf_idcliente = ?', [req.body.idproduto, req.body.idcliente], (error, result)=> {
-            if(error){
-                return res.status(500).send({error: error});
+        conn.query(
+            "UPDATE carrinho SET qtde = qtde-1 WHERE cliente_pf_idcliente = ? and oferta_idoferta = ?",
+            [
+                req.body.idcliente,
+                req.body.idproduto
+                ],
+            (error, resultado, fields)=>{
+                conn.release();
+                if(error){
+                    return res.status(500).send({error: error});
+                }
+                return res.status(202).send({
+                    mensagem: 'Qtde alterada com sucesso.',
+                })
             }
-            if(result.length>0){
-                conn.query(
-                    "UPDATE carrinho SET qtde = qtde-1 WHERE cliente_pf_idcliente = ? and oferta_idoferta = ?",
-                    [
-                        req.body.idcliente,
-                        req.body.idproduto
-                     ],
-                    (error, resultado, fields)=>{
-                        conn.release();
-                        if(error){
-                            return res.status(500).send({error: error});
-                        }
-                        return res.status(202).send({
-                            mensagem: 'Qtde alterada com sucesso.',
-                        })
-                    }
-                )
+        )
+    })
+};
+
+
+exports.incProduto = (req, res, next) => {
+    mysql.getConnection((error, conn)=>{
+        if(error){
+            return res.status(500).send({error: error});
+        }
+        conn.query(
+            "UPDATE carrinho SET qtde = qtde+1 WHERE cliente_pf_idcliente = ? and oferta_idoferta = ?",
+            [
+                req.body.idcliente,
+                req.body.idproduto
+                ],
+            (error, resultado, fields)=>{
+                conn.release();
+                if(error){
+                    return res.status(500).send({error: error});
+                }
+                return res.status(202).send({
+                    mensagem: 'Qtde alterada com sucesso.',
+                })
             }
-        })
+        )
+    })
+};
+
+exports.deleteProduto = (req, res, next) => {
+    mysql.getConnection((error, conn)=>{
+        if(error){
+            return res.status(500).send({error: error});
+        }        
+        conn.query(
+            "DELETE FROM carrinho WHERE oferta_idoferta = ? and cliente_pf_idcliente = ?",
+            [
+                req.body.idcliente,
+                req.body.idproduto
+                ],
+            (error, resultado, fields)=>{
+                conn.release();
+                if(error){
+                    return res.status(500).send({error: error});
+                }
+                return res.status(202).send({
+                    mensagem: 'Deletado com sucesso.',
+                })
+            }
+        )
     })
 };

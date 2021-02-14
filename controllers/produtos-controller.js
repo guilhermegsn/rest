@@ -16,7 +16,7 @@ exports.getProutos =  (req, res, next) => {
         )
     })
 };
-
+4
 exports.postProdutos = (req, res, next) => {
     mysql.getConnection((error, conn)=> {
         if(error){

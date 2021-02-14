@@ -2,12 +2,16 @@ const express = require('express');
 const router = express.Router();
 const login = require('../middleaware/login');
 
-const carrinho = require('../controllers/carrinho-controller');
+const carrinhoController = require('../controllers/carrinho-controller');
 
-router.post('/:idcliente', carrinho.getCarrinho);
+router.post('/getcarrinho', login, carrinhoController.getCarrinho);
 
-router.post('/', carrinho.setCarrinho);
+router.post('/decproduto', login, carrinhoController.decProduto);
 
-router.post('/decproduto', login, carrinho.decProduto);
+router.post('/addproduto', carrinhoController.setCarrinho);
+
+router.post('/incproduto', login, carrinhoController.incProduto);
+
+router.delete('/deleteproduto', login, carrinhoController.deleteProduto);
 
 module.exports = router;
