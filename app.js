@@ -3,10 +3,12 @@ const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 
+
 const rotaProdutos = require('./routes/produtos');
 const rotaOfertas = require('./routes/ofertas');
 const rotaUsuarios = require('./routes/usuarios');
-const rotaCarrinho = require('./routes/carrinho')
+const rotaCarrinho = require('./routes/carrinho');
+const rotaSendEmail = require('./routes/sendemail');
 
 app.use(morgan('dev'));
 app.use('/uploads', express.static('uploads'));
@@ -31,6 +33,8 @@ app.use('/usuarios', rotaUsuarios);
 app.use('/produtos', rotaProdutos);
 app.use('/ofertas', rotaOfertas);
 app.use('/carrinho', rotaCarrinho);
+app.use('/sendemail', rotaSendEmail);
+
 
 // Quando não encontra rota, entra aqui:
 app.use((req, res, next) => {
